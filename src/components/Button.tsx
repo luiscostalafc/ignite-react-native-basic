@@ -2,7 +2,11 @@ import React from "react";
 
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
 
-const Button = ({ handleAddNewSkill }) => (
+interface ButtonProps {
+  handleAddNewSkill: () => void;
+}
+
+const Button = ({ handleAddNewSkill }: ButtonProps) => (
   <TouchableOpacity
     style={styles.button}
     activeOpacity={0.7}
