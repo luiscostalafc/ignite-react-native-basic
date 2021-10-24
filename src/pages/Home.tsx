@@ -13,8 +13,13 @@ import { SkillCard } from "../components/SkillCard";
 
 const Home = () => {
   const [newSkill, setNewSkill] = useState("");
-  const [mySkills, setMySkills] = useState([]);
+  const [mySkills, setMySkills] = useState<SkillData[]>([]);
   const [greeting, setGreeting] = useState("");
+
+  interface SkillData {
+    id: string;
+    name: string;
+  }
 
   useEffect(() => {
     const currentHour = new Date().getHours();
@@ -29,7 +34,12 @@ const Home = () => {
   }, []);
 
   function handleAddNewSkill() {
-    setMySkills((oldState) => [...oldState, newSkill]);
+    const data = {
+      id: String(new Date().getTime()),
+      name: newSkill,
+    };
+
+    setMySkills((oldState) => [...oldState, data]);
   }
 
   return (
@@ -45,18 +55,14 @@ const Home = () => {
         onChangeText={setNewSkill}
       />
 
-      <Button
-        styleButton={styles.button}
-        styleButtonText={styles.buttonText}
-        handleAddNewSkill={handleAddNewSkill}
-      />
+      <Button handleAddNewSkill={handleAddNewSkill} />
 
       <Text style={[styles.title, { marginVertical: 50 }]}>My Skills</Text>
 
       <FlatList
         data={mySkills}
-        keyExtractor={(item) => item}
-        renderItem={({ item }) => <SkillCard skill={item} />}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <SkillCard skill={item.name} />}
       />
     </View>
   );
